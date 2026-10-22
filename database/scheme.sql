@@ -1,0 +1,6 @@
+DROP DATABASE IF EXISTS youtube;
+
+CREATE DATABASE youtube CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE pizzeria;
+
+CREATE TABLE
