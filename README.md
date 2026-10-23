@@ -54,4 +54,6 @@ Un usuario puede marcar un comentario como me gusta o no me gusta. Habrá que ll
 
 ## Execution
 - he creado la estructura base con docker-compose.yml, scheme.sql y Main.
+- completado el scheme.sql con toda la estructura y he empezado a escribir las clases con los repositories
+- ya tambièn he creado las connexiones, con databaseConnection y las dependencies
 - 
