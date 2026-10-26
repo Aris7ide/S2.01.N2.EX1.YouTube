@@ -57,3 +57,4 @@ Un usuario puede marcar un comentario como me gusta o no me gusta. Habrá que ll
 - completado el scheme.sql con toda la estructura y he empezado a escribir las clases con los repositories
 - ya tambièn he creado las connexiones, con databaseConnection y las dependencies
 - Creado las clases Channel,LikeVideo,Tag,User,Video con repositories y tests
+- creado el resto de las clases con repositories y pruebas unitarias.

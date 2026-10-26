@@ -17,8 +17,6 @@ public class Video {
     private Channel channel;
     private LocalDate date;
 
-    private List<LikeVideo> likesList;
-
     private int likes;
 
     public Video(String title, String description, double size, String fileName, String thumbnailUrl,
@@ -35,7 +33,6 @@ public class Video {
         this.channel = channel;
         this.date = date;
 
-        this.likesList = new ArrayList<>();
         this.likes = 0;
     }
 
@@ -125,13 +122,5 @@ public class Video {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public List<LikeVideo> getLikesList() {
-        return likesList;
-    }
-
-    public void setLikesList(List<LikeVideo> likesList) {
-        this.likesList = likesList;
     }
 }

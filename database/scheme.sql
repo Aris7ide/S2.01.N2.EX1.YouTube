@@ -2,11 +2,6 @@ DROP DATABASE IF EXISTS youtube;
 CREATE DATABASE youtube CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE youtube;
 
-CREATE TABLE tags (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(15) NOT NULL
-);
-
 CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(30) NOT NULL,
@@ -51,11 +46,23 @@ CREATE TABLE video (
                         REFERENCES channel(id)
 );
 
+CREATE TABLE tags (
+                      id INT AUTO_INCREMENT PRIMARY KEY,
+                      name VARCHAR(15) NOT NULL
+);
 
 CREATE TABLE video_tags (
                             tag_id INT NOT NULL,
                             video_id INT NOT NULL,
-                            PRIMARY KEY (tag_id,video_id)
+                            PRIMARY KEY (tag_id, video_id),
+
+                            CONSTRAINT fk_v_tag
+                                FOREIGN KEY (tag_id)
+                                    REFERENCES tags(id),
+
+                            CONSTRAINT tk_v_video
+                                FOREIGN KEY (video_id)
+                                    REFERENCES video(id)
 );
 
 CREATE TABLE likes_video (
@@ -71,20 +78,6 @@ CREATE TABLE likes_video (
     CONSTRAINT fk_likes_video_video
                          FOREIGN KEY (video_id)
                          REFERENCES video(id)
-);
-
-CREATE TABLE video_tags (
-                            tag_id INT NOT NULL,
-                            video_id INT NOT NULL,
-                            PRIMARY KEY (tag_id, video_id),
-
-                            CONSTRAINT fk_v_tag
-                                FOREIGN KEY (tag_id)
-                                    REFERENCES tags(id),
-
-                            CONSTRAINT tk_v_video
-                                FOREIGN KEY (video_id)
-                                    REFERENCES video(id)
 );
 
 CREATE TABLE user_subscription (
@@ -105,20 +98,25 @@ CREATE TABLE playlist (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(60) NOT NULL,
     creation_date DATE NOT NULL,
-    state ENUM('public','private') NOT NULL
-);
-
-CREATE TABLE playlist_user (
-    playlist_id INT NOT NULL,
     user_id INT NOT NULL,
-    PRIMARY KEY (playlist_id,user_id),
+    state ENUM('public','private') NOT NULL,
 
     CONSTRAINT fk_playlist_user
+                      FOREIGN KEY (user_id)
+                      REFERENCES user(id)
+);
+
+CREATE TABLE playlist_video (
+    playlist_id INT NOT NULL,
+    video_id INT NOT NULL,
+    PRIMARY KEY (playlist_id,video_id),
+
+    CONSTRAINT fk_user_playlist
                            FOREIGN KEY (playlist_id)
                            REFERENCES playlist(id),
-    CONSTRAINT fk_user_playlist
-                           FOREIGN KEY (user_id)
-                           REFERENCES user(id)
+    CONSTRAINT fk_video_playlist
+                           FOREIGN KEY (video_id)
+                           REFERENCES video(id)
 );
 
 CREATE TABLE comments (
@@ -139,7 +137,8 @@ CREATE TABLE comments (
 CREATE TABLE likes_comment (
     user_id INT NOT NULL,
     comment_id INT NOT NULL,
-    comment_date DATE NOT NULL,
+    like_date DATE NOT NULL,
+    type ENUM('l','d') NOT NULL,
     PRIMARY KEY (user_id,comment_id),
 
     CONSTRAINT fk_like_comment_user
@@ -147,19 +146,5 @@ CREATE TABLE likes_comment (
                            REFERENCES user(id),
     CONSTRAINT fk_like_comment_video
                            FOREIGN KEY (comment_id)
-                           REFERENCES comment(id)
-);
-
-CREATE TABLE dislikes_comment (
-                                  user_id INT NOT NULL,
-                                  comment_id INT NOT NULL,
-                                  comment_date DATE NOT NULL,
-                                  PRIMARY KEY (user_id,comment_id),
-
-                                  CONSTRAINT fk_dislike_comment_user
-                                      FOREIGN KEY (user_id)
-                                          REFERENCES user(id),
-                                  CONSTRAINT fk_dislike_comment_video
-                                      FOREIGN KEY (comment_id)
-                                          REFERENCES comment(id)
+                           REFERENCES comments(id)
 );
