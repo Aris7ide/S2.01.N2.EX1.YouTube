@@ -37,21 +37,31 @@ CREATE TABLE video (
                        size DECIMAL (10,4) NOT NULL,
                        name_file VARCHAR(120) NOT NULL,
                        thumbnail VARCHAR(120),
-                       likes INT,
-                       dislikes INT,
                        state ENUM('public', 'hidden', 'private') NOT NULL,
-                       tags VARCHAR(120),
                        user_id INT NOT NULL,
+                       channel_id INT,
                        time_publication DATE NOT NULL,
 
                         CONSTRAINT fk_video_user
                         FOREIGN KEY (user_id)
-                        REFERENCES user(id)
+                        REFERENCES user(id),
+
+                        CONSTRAINT fk_video_channel
+                        FOREIGN KEY (channel_id)
+                        REFERENCES channel(id)
+);
+
+
+CREATE TABLE video_tags (
+                            tag_id INT NOT NULL,
+                            video_id INT NOT NULL,
+                            PRIMARY KEY (tag_id,video_id)
 );
 
 CREATE TABLE likes_video (
     user_id INT NOT NULL,
     video_id INT NOT NULL,
+    type ENUM('l','d') NOT NULL,
     PRIMARY KEY (user_id,video_id),
 
     CONSTRAINT fk_likes_user_video
@@ -61,20 +71,6 @@ CREATE TABLE likes_video (
     CONSTRAINT fk_likes_video_video
                          FOREIGN KEY (video_id)
                          REFERENCES video(id)
-);
-
-CREATE TABLE dislikes_video (
-                             user_id INT NOT NULL,
-                             video_id INT NOT NULL,
-                             PRIMARY KEY (user_id,video_id),
-
-                             CONSTRAINT fk_dislikes_user_video
-                                 FOREIGN KEY (user_id)
-                                     REFERENCES user(id),
-
-                             CONSTRAINT fk_dislikes_video_video
-                                 FOREIGN KEY (video_id)
-                                     REFERENCES video(id)
 );
 
 CREATE TABLE video_tags (

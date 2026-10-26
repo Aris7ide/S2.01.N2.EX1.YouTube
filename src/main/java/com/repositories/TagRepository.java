@@ -16,9 +16,11 @@ public class TagRepository {
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     tag.setId(rs.getInt(1));
-                    return findById(connection, rs.getInt(1));
                 }
             }
+
+            System.out.println("tag " + tag.getTag() + " saved successfully");
+            return findById(connection, tag.getId());
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());

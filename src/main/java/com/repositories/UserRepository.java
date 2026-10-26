@@ -63,7 +63,6 @@ public class UserRepository {
                             rs.getString("postal_code")
                     );
                     user.setId(id);
-                    System.out.println("Found " + user.getUsername() + " with id n. " + user.getId());
                     return user;
                 }
             }
